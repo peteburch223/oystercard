@@ -20,7 +20,8 @@ describe Oystercard do
     end
 
     it 'raises error if balance is greater than defined amount' do
-      expect {oystercard.top_up(Oystercard::MAX_BALANCE + 1)}.to raise_error("Maximum balance of #{Oystercard::MAX_BALANCE} would be exceeded")
+      oystercard.top_up(Oystercard::MAX_BALANCE)
+      expect {oystercard.top_up(1)}.to raise_error("Maximum balance of #{Oystercard::MAX_BALANCE} would be exceeded")
     end
   end
 end
