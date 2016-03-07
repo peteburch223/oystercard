@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard){ described_class.new }
+  let(:Oystercard){described_class}
 
   TOP_UP_AMOUNT = 10
 
@@ -16,6 +17,10 @@ describe Oystercard do
   describe '#top_up' do
     it 'balance increases when money is added' do
       expect {oystercard.top_up(TOP_UP_AMOUNT)}.to change{oystercard.balance}.by(TOP_UP_AMOUNT)
+    end
+
+    it 'raises error if balance is greater than defined amount' do
+      expect {oystercard.top_up(Oystercard::MAX_BALANCE + 1)}.to raise_error("Maximum balance of #{Oystercard::MAX_BALANCE} would be exceeded")
     end
   end
 end
