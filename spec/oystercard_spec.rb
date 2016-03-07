@@ -9,6 +9,9 @@ describe Oystercard do
   context 'initial tests' do
     it {is_expected.to respond_to(:balance)}
     it {is_expected.to respond_to(:top_up).with(1).argument}
+    it {is_expected.to respond_to(:in_journey?)}
+    it {is_expected.to respond_to(:touch_in)}
+    it {is_expected.to respond_to(:touch_out)}
     it 'has an initial balance of zero' do
       expect(oystercard.balance).to eq(0)
     end
@@ -35,5 +38,25 @@ describe Oystercard do
     end
 
   end
+
+  describe 'journey status' do
+    it{is_expected.to_not be_in_journey}
+  end
+
+  describe '#touch_in' do
+    it 'sets in_journey to be true' do
+      oystercard.touch_in
+      expect(oystercard).to be_in_journey
+    end
+  end
+
+  describe '#touch_out' do
+    it 'sets in_journey to be false' do
+      oystercard.touch_in
+      oystercard.touch_out
+      expect(oystercard).to_not be_in_journey
+    end
+  end
+
 
 end
