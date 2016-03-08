@@ -2,12 +2,14 @@ class Oystercard
   attr_reader :balance
 
   DEFAULT_BALANCE = 0
+  MAX_LIMIT = 90
 
   def initialize
     @balance = DEFAULT_BALANCE
   end
 
   def top_up(amount)
+    raise "Exceeded £#{MAX_LIMIT} limit" if max_reached?(amount)
     @balance += amount
   end
 
@@ -19,6 +21,10 @@ class Oystercard
 
   def start_balance
     @balance == DEFAULT_BALANCE
+  end
+
+  def max_reached?(amount)
+    @balance + amount > MAX_LIMIT
   end
 
 end
