@@ -21,12 +21,12 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    it 'deducts amount from card balance' do
-      oystercard.top_up(12)
-      expect {oystercard.deduct(5)}.to change{oystercard.balance}.by -5
-    end
-  end
+  # describe '#deduct' do
+  #   it 'deducts amount from card balance' do
+  #     oystercard.top_up(12)
+  #     expect {oystercard.touch_out(5)}.to change{oystercard.balance}.by -5
+  #   end
+  # end
 
   describe '#in_journey' do
 
@@ -44,7 +44,7 @@ describe Oystercard do
     it 'changes status of card to not in use after touching out' do
       oystercard.top_up(1)
       oystercard.touch_in
-      oystercard.touch_out
+      oystercard.touch_out(1)
       expect(oystercard).not_to be_in_journey
     end
   end
@@ -53,6 +53,15 @@ describe Oystercard do
     it 'raises error when minimum balance reached' do
       message = "You must have over £#{Oystercard::MIN_LIMIT} on your card"
       expect {oystercard.touch_in}.to raise_error message
+    end
+  end
+
+  describe '#touch_out' do
+    it 'deducts fare from balance after touching out' do
+      fare = 5
+      oystercard.top_up(20)
+      oystercard.touch_in
+      expect{oystercard.touch_out(fare)}.to change{oystercard.balance}.by -5
     end
   end
 
