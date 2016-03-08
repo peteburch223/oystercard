@@ -6,7 +6,7 @@ describe Oystercard do
 
   describe 'new card' do
     it 'with balance of £0' do
-      expect(oystercard).to be_zero_balance
+      expect(oystercard.balance).to eq 0
     end
   end
 
@@ -55,7 +55,6 @@ describe Oystercard do
       oystercard.touch_in(station)
       expect(oystercard.journey[:entry_station]).to eq station
     end
-
   end
 
   describe '#touch_out' do
@@ -67,7 +66,7 @@ describe Oystercard do
       oystercard.top_up(1)
       oystercard.touch_in(station)
       oystercard.touch_out(station)
-      expect(oystercard.entry_station).to be_empty
+      expect(oystercard.journey).to be_empty
     end
 
     it 'stores exit station upon touch out' do
@@ -83,9 +82,5 @@ describe Oystercard do
       oystercard.touch_out(station)
       expect(oystercard.journeys[0][:entry_station]).to eq station
     end
-
   end
-
-
-
 end
