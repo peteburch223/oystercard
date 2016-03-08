@@ -10,7 +10,7 @@ describe Oystercard do
   end
 
   describe '#top_up' do
-    it 'expect to add to balance' do
+    it 'expect to add amount to card balance' do
       expect {oystercard.top_up(10)}.to change{oystercard.balance}.by 10
     end
 
@@ -18,6 +18,13 @@ describe Oystercard do
       fare = Oystercard::MAX_LIMIT + 1
       message = "Exceeded £#{Oystercard::MAX_LIMIT} limit"
       expect{oystercard.top_up fare}.to raise_error message
+    end
+  end
+
+  describe '#deduct' do
+    it 'deducts amount from card balance' do
+      oystercard.top_up(12)
+      expect {oystercard.deduct(5)}.to change{oystercard.balance}.by -5
     end
   end
 
