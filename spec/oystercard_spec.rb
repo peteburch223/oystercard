@@ -50,11 +50,11 @@ describe Oystercard do
       expect {oystercard.touch_in(station)}.to raise_error message
     end
 
-    # it 'Stores lastest entry station' do
-    #   oystercard.top_up(1)
-    #   oystercard.touch_in(station)
-    #   expect(oystercard.journeys[0][0]).to eq station
-    # end
+    it 'Stores lastest entry station' do
+      oystercard.top_up(1)
+      oystercard.touch_in(station)
+      expect(oystercard.journey[:entry_station]).to eq station
+    end
 
   end
 
@@ -65,18 +65,27 @@ describe Oystercard do
 
     it 'Removes the entry station upon touch out' do
       oystercard.top_up(1)
-      oystercard.touch_in("Aldgate")
+      oystercard.touch_in(station)
       oystercard.touch_out(station)
-      expect(oystercard.entry_station).to be_nil
+      expect(oystercard.entry_station).to be_empty
     end
 
     it 'stores exit station upon touch out' do
       oystercard.top_up(1)
       oystercard.touch_in(station)
       oystercard.touch_out(station)
-      expect(oystercard.journeys['Journey'][1]).to eq station
+      expect(oystercard.journeys[0][:exit_station]).to eq station
+    end
+
+    it 'stores entry station after touching out' do
+      oystercard.top_up(1)
+      oystercard.touch_in(station)
+      oystercard.touch_out(station)
+      expect(oystercard.journeys[0][:entry_station]).to eq station
     end
 
   end
+
+
 
 end

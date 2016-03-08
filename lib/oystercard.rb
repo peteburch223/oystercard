@@ -1,6 +1,6 @@
 class Oystercard
 
-  attr_reader :balance, :entry_station, :exit_station, :journeys
+  attr_reader :balance, :entry_station, :exit_station, :journeys, :journey
 
   DEFAULT_BALANCE = 0
   MAX_LIMIT = 90
@@ -9,9 +9,10 @@ class Oystercard
 
   def initialize
     @balance = DEFAULT_BALANCE
-    @entry_station = []
-    @exit_station = []
-    @journeys = Hash.new
+    @entry_station = {}
+    @exit_station = {}
+    @journeys = []
+    @journey = {}
   end
 
   def top_up(amount)
@@ -20,20 +21,22 @@ class Oystercard
   end
 
   def in_journey?
-    !!entry_station
+    !journey.empty?
   end
 
   def touch_in(station)
     raise "You must have over £#{Oystercard::MIN_FARE} on your card" if min_reached?
-    @entry_staton = station
+    @journey[:entry_station] = station
   end
 
   def touch_out(station)
-    deduct(MIN_FARE)
-    @exit_station = station
-    @journeys['Journey'] = [@entry_staton,@exit_station]
-    @entry_station = nil
+     deduct(MIN_FARE)
+     @journey[:exit_station] = station
+     completed_journey
+     @journey = {}
   end
+
+
 
   def zero_balance?
     start_balance
@@ -57,4 +60,7 @@ class Oystercard
     @balance -= fare
   end
 
+  def completed_journey
+    @journeys << @journey
+  end
 end
