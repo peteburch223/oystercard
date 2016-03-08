@@ -29,7 +29,7 @@ describe Oystercard do
     end
 
     it 'returns status of card' do
-      oystercard.touch_out
+      oystercard.touch_out(station)
       expect(oystercard).not_to be_in_journey
     end
 
@@ -38,7 +38,7 @@ describe Oystercard do
     end
 
     it 'changes status of card to not in use after touching out' do
-      oystercard.touch_out
+      oystercard.touch_out(station)
       expect(oystercard).not_to be_in_journey
     end
   end
@@ -50,24 +50,31 @@ describe Oystercard do
       expect {oystercard.touch_in(station)}.to raise_error message
     end
 
-    it 'Stores lastest entry station' do
-      oystercard.top_up(1)
-      oystercard.touch_in(station)
-      expect(oystercard.entry_station.last).to eq station
-    end
+    # it 'Stores lastest entry station' do
+    #   oystercard.top_up(1)
+    #   oystercard.touch_in(station)
+    #   expect(oystercard.journeys[0][0]).to eq station
+    # end
 
   end
 
   describe '#touch_out' do
     it 'deducts fare from balance after touching out' do
-      expect{oystercard.touch_out}.to change{oystercard.balance}.by -1
+      expect{oystercard.touch_out(station)}.to change{oystercard.balance}.by -1
     end
 
     it 'Removes the entry station upon touch out' do
       oystercard.top_up(1)
       oystercard.touch_in("Aldgate")
-      oystercard.touch_out
+      oystercard.touch_out(station)
       expect(oystercard.entry_station).to be_nil
+    end
+
+    it 'stores exit station upon touch out' do
+      oystercard.top_up(1)
+      oystercard.touch_in(station)
+      oystercard.touch_out(station)
+      expect(oystercard.journeys['Journey'][1]).to eq station
     end
 
   end

@@ -1,6 +1,6 @@
 class Oystercard
 
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :exit_station, :journeys
 
   DEFAULT_BALANCE = 0
   MAX_LIMIT = 90
@@ -10,6 +10,8 @@ class Oystercard
   def initialize
     @balance = DEFAULT_BALANCE
     @entry_station = []
+    @exit_station = []
+    @journeys = Hash.new
   end
 
   def top_up(amount)
@@ -23,11 +25,13 @@ class Oystercard
 
   def touch_in(station)
     raise "You must have over £#{Oystercard::MIN_FARE} on your card" if min_reached?
-    @entry_station << station
+    @entry_staton = station
   end
 
-  def touch_out
+  def touch_out(station)
     deduct(MIN_FARE)
+    @exit_station = station
+    @journeys['Journey'] = [@entry_staton,@exit_station]
     @entry_station = nil
   end
 
