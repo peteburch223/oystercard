@@ -3,6 +3,8 @@ class Oystercard
 
   DEFAULT_BALANCE = 0
   MAX_LIMIT = 90
+  MIN_LIMIT = 1
+
 
   def initialize
     @balance = DEFAULT_BALANCE
@@ -23,6 +25,7 @@ class Oystercard
   end
 
   def touch_in
+    raise "You must have over £#{Oystercard::MIN_LIMIT} on your card" if min_reached?
     @in_use = true
   end
 
@@ -42,6 +45,10 @@ class Oystercard
 
   def max_reached?(amount)
     @balance + amount > MAX_LIMIT
+  end
+
+  def min_reached?
+    @balance < MIN_LIMIT
   end
 
 end
