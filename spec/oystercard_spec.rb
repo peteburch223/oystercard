@@ -1,6 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
+  let(:station){double :station}
   subject(:oystercard) {described_class.new}
 
   describe 'new card' do
@@ -21,48 +22,54 @@ describe Oystercard do
     end
   end
 
-  # describe '#deduct' do
-  #   it 'deducts amount from card balance' do
-  #     oystercard.top_up(12)
-  #     expect {oystercard.touch_out(5)}.to change{oystercard.balance}.by -5
-  #   end
-  # end
-
   describe '#in_journey' do
+    before do
+      oystercard.top_up(1)
+      oystercard.touch_in(station)
+    end
 
     it 'returns status of card' do
-      expect(oystercard.in_journey?).to be false
+      oystercard.touch_out
       expect(oystercard).not_to be_in_journey
     end
 
     it 'changes status of card to in use after touching in' do
-      oystercard.top_up(1)
-      oystercard.touch_in
       expect(oystercard).to be_in_journey
     end
 
     it 'changes status of card to not in use after touching out' do
-      oystercard.top_up(1)
-      oystercard.touch_in
-      oystercard.touch_out(1)
+      oystercard.touch_out
       expect(oystercard).not_to be_in_journey
     end
   end
 
   describe '#touch_in' do
+
     it 'raises error when minimum balance reached' do
-      message = "You must have over £#{Oystercard::MIN_LIMIT} on your card"
-      expect {oystercard.touch_in}.to raise_error message
+      message = "You must have over £#{Oystercard::MIN_FARE} on your card"
+      expect {oystercard.touch_in(station)}.to raise_error message
     end
+
+    it 'Stores lastest entry station' do
+      oystercard.top_up(1)
+      oystercard.touch_in(station)
+      expect(oystercard.entry_station.last).to eq station
+    end
+
   end
 
   describe '#touch_out' do
     it 'deducts fare from balance after touching out' do
-      fare = 5
-      oystercard.top_up(20)
-      oystercard.touch_in
-      expect{oystercard.touch_out(fare)}.to change{oystercard.balance}.by -5
+      expect{oystercard.touch_out}.to change{oystercard.balance}.by -1
     end
+
+    it 'Removes the entry station upon touch out' do
+      oystercard.top_up(1)
+      oystercard.touch_in("Aldgate")
+      oystercard.touch_out
+      expect(oystercard.entry_station).to be_nil
+    end
+
   end
 
 end
