@@ -28,4 +28,22 @@ describe Oystercard do
     end
   end
 
+  describe '#in_journey' do
+    it 'returns status of card' do
+      expect(oystercard.in_journey?).to be false
+      expect(oystercard).not_to be_in_journey
+    end
+
+    it 'changes status of card to in use after touching in' do
+      oystercard.touch_in
+      expect(oystercard).to be_in_journey
+    end
+
+    it 'changes status of card to not in use after touching out' do
+      oystercard.touch_in
+      oystercard.touch_out
+      expect(oystercard).not_to be_in_journey
+    end
+  end
+
 end
