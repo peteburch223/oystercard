@@ -4,6 +4,9 @@ describe Oystercard do
   let(:station){double :station}
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
+
+  let(:journey){{entry_station: entry_station, exit_station: exit_station}}
+
   subject(:oystercard) {described_class.new}
   subject(:Oystercard) {described_class}
 
@@ -65,9 +68,6 @@ describe Oystercard do
       oystercard.top_up(1)
       oystercard.touch_in(entry_station)
       oystercard.touch_out(exit_station)
-      journey = {}
-      journey[:entry_station] = entry_station
-      journey[:exit_station] = exit_station
       expect(oystercard.journeys).to include journey
     end
 
