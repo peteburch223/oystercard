@@ -1,4 +1,4 @@
-require_relative 'journey'
+require_relative 'journey_log'
 
   class Oystercard
 
@@ -11,10 +11,11 @@ require_relative 'journey'
 
   attr_reader :balance, :journeys
 
-  def initialize(journey_class: Journey)
+  def initialize(journey_log_class: JourneyLog)
     @balance = DEFAULT_BALANCE
     @journeys = []
-    @journey_class = journey_class
+    # @journeys = journey_log_class.new
+    @journey_class = journey_log_class
   end
 
   def top_up(amount)

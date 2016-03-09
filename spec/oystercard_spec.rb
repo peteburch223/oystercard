@@ -10,7 +10,7 @@ describe Oystercard do
 
   let(:journey_class) { double :journey_class, new: journey_instance }
   let(:journey_instance) { double :journey_instance, add_station: nil, fare: Oystercard::MIN_FARE }
-  subject(:oystercard) {described_class.new(journey_class: journey_class)}
+  subject(:oystercard) {described_class.new(journey_log_class: journey_class)}
 
 
 

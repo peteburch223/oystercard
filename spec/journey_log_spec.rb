@@ -30,7 +30,7 @@ describe JourneyLog do
     journeylog.current_journey
     journeylog.start(entry_station)
     journeylog.finish(exit_station)
-    # journeylog.commit
+    journeylog.commit
     expect(journeylog.journeys).to include journey_instance
   end
 

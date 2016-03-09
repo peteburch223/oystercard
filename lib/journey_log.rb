@@ -26,4 +26,9 @@ class JourneyLog
     @journey = nil
   end
 
+  private
+  def in_journey?
+    !@journey.nil?
+  end
+
 end

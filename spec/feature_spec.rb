@@ -1,6 +1,7 @@
 require 'oystercard'
 require 'station'
-
+describe 'Feature Test' do
+pending do
 card = Oystercard.new
 card.top_up(10)
 puts "Card balance after top-up: #{card.balance}"
@@ -18,3 +19,5 @@ puts "Balance after journey #{card.balance}"
 # card.touch_in('chorleywood')
 # puts "Journeys after touching in twice : #{card.journeys}"
 # puts "Balance after touching in twice #{card.balance}"
+end
+end
