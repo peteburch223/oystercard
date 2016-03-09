@@ -55,6 +55,8 @@ describe Oystercard do
 
   describe '#touch_out' do
 
+
+
     it 'deducts fare from balance after touching out' do
       expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by -Oystercard::MIN_FARE
     end
