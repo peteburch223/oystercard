@@ -1,4 +1,4 @@
-class Oystercard
+  class Oystercard
 
   DEFAULT_BALANCE = 0
   MAX_LIMIT = 90
@@ -8,8 +8,6 @@ class Oystercard
 
   def initialize
     @balance = DEFAULT_BALANCE
-    @entry_station = {}
-    @exit_station = {}
     @journeys = []
     @journey = {}
   end
@@ -31,19 +29,10 @@ class Oystercard
   def touch_out(station)
      deduct(MIN_FARE)
      @journey[:exit_station] = station
-     completed_journey
-     new_journey
+     store_journey
   end
 
-  # def zero_balance?
-  #   start_balance
-  # end
-
   private
-
-  # def start_balance
-  #   @balance == DEFAULT_BALANCE
-  # end
 
   def max_reached?(amount)
     @balance + amount > MAX_LIMIT
@@ -55,6 +44,11 @@ class Oystercard
 
   def deduct(fare)
     @balance -= fare
+  end
+
+  def store_journey
+    completed_journey
+    new_journey
   end
 
   def completed_journey
