@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/pete/Projects/oystercard/spec/feature_spec.rb": [
+      "/Users/andrewcookson/Makers/oystercard/spec/feature_spec.rb": [
         1,
         1,
         null,
@@ -23,7 +23,7 @@
         null,
         null
       ],
-      "/Users/pete/Projects/oystercard/lib/oystercard.rb": [
+      "/Users/andrewcookson/Makers/oystercard/lib/oystercard.rb": [
         1,
         null,
         1,
@@ -58,13 +58,10 @@
         10,
         null,
         null,
-        null,
-        null,
         1,
         6,
         6,
         6,
-        null,
         null,
         null,
         1,
@@ -84,7 +81,7 @@
         null,
         null
       ],
-      "/Users/pete/Projects/oystercard/lib/journey.rb": [
+      "/Users/andrewcookson/Makers/oystercard/lib/journey.rb": [
         1,
         null,
         1,
@@ -106,7 +103,7 @@
         null,
         null
       ],
-      "/Users/pete/Projects/oystercard/lib/station.rb": [
+      "/Users/andrewcookson/Makers/oystercard/lib/station.rb": [
         1,
         1,
         null,
@@ -116,7 +113,96 @@
         null,
         null
       ],
-      "/Users/pete/Projects/oystercard/spec/journey_spec.rb": [
+      "/Users/andrewcookson/Makers/oystercard/spec/journey_log_spec.rb": [
+        1,
+        1,
+        null,
+        8,
+        8,
+        8,
+        null,
+        2,
+        2,
+        1,
+        null,
+        null,
+        2,
+        2,
+        2,
+        2,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/andrewcookson/Makers/oystercard/lib/journey_log.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        null,
+        1,
+        7,
+        7,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
+        1,
+        4,
+        null,
+        null,
+        1,
+        0,
+        0,
+        null,
+        null,
+        null
+      ],
+      "/Users/andrewcookson/Makers/oystercard/spec/journey_spec.rb": [
         1,
         null,
         1,
@@ -148,7 +234,7 @@
         null,
         null
       ],
-      "/Users/pete/Projects/oystercard/spec/oystercard_spec.rb": [
+      "/Users/andrewcookson/Makers/oystercard/spec/oystercard_spec.rb": [
         1,
         null,
         1,
@@ -249,7 +335,7 @@
         null,
         null
       ],
-      "/Users/pete/Projects/oystercard/spec/station_spec.rb": [
+      "/Users/andrewcookson/Makers/oystercard/spec/station_spec.rb": [
         1,
         null,
         1,
@@ -262,6 +348,6 @@
         null
       ]
     },
-    "timestamp": 1457541801
+    "timestamp": 1457546434
   }
 }
