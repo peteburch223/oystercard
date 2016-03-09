@@ -4,11 +4,10 @@ require_relative 'journey'
 
   DEFAULT_BALANCE = 0
   MAX_LIMIT = 90
-  MIN_FARE = 1
+  MIN_FARE = Journey::MIN_FARE
+  PENALTY_FARE = Journey::PENALTY_FARE
   MIN_ERROR = "You must have over £#{Oystercard::MIN_FARE} on your card"
   MAX_ERROR = "Exceeded £#{MAX_LIMIT} limit"
-
-
 
   attr_reader :balance, :journeys
 
@@ -28,23 +27,28 @@ require_relative 'journey'
   end
 
   def touch_in(station)
+    push_journey(@journey) if in_journey?
     raise MIN_ERROR if @balance < MIN_FARE
-    @journey = @journey_class.new
-    @journey.add_station(:entry_station => station)
+    start_journey(station)
   end
 
   def touch_out(station)
+    @journey = @journey_class.new unless in_journey?
     @journey.add_station(:exit_station => station)
-     push_journey(@journey)
-     @journey = nil
+    push_journey(@journey)
   end
 
   private
 
+  def start_journey(station)
+    @journey = @journey_class.new
+    @journey.add_station(:entry_station => station)
+  end
 
   def push_journey(journey)
-    @balance -= MIN_FARE
+    @balance -= @journey.fare
     @journeys << @journey
+    @journey = nil
   end
 
 
