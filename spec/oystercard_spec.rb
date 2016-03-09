@@ -4,10 +4,11 @@ describe Oystercard do
   let(:station){double :station}
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
+  let(:journey) { double :journey }
 
-  let(:journey){{entry_station: entry_station, exit_station: exit_station}}
+  let(:trip){{entry_station: entry_station, exit_station: exit_station}}
 
-  subject(:oystercard) {described_class.new}
+  subject(:oystercard) {described_class.new(journey_class: journey)}
   subject(:Oystercard) {described_class}
 
   describe 'new card' do
@@ -61,14 +62,19 @@ describe Oystercard do
 
 
     it 'deducts fare from balance after touching out' do
+      oystercard.top_up(1)
+      oystercard.touch_in(entry_station)
       expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by -Oystercard::MIN_FARE
     end
 
     it 'stores journey upon touch out' do
       oystercard.top_up(1)
+      allow(journey).to receive(:add_station).with(entry_station)
+      allow(journey).to receive(:add_station).with(exit_station)
+      allow(subject).to receive(:new_journey).and_return(journey)
       oystercard.touch_in(entry_station)
       oystercard.touch_out(exit_station)
-      expect(oystercard.journeys).to include journey
+      expect(oystercard.journeys).to include trip
     end
 
   end

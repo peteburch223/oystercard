@@ -1,3 +1,5 @@
+require_relative 'journey'
+
   class Oystercard
 
   DEFAULT_BALANCE = 0
@@ -10,10 +12,10 @@
 
   attr_reader :balance, :journeys
 
-  def initialize
+  def initialize(journey_class: Journey)
     @balance = DEFAULT_BALANCE
     @journeys = []
-    @journey = {}
+    @journey_class = journey_class
   end
 
   def top_up(amount)
@@ -22,26 +24,29 @@
   end
 
   def in_journey?
-    !@journey.empty?
+    !@journey.nil?
   end
 
   def touch_in(station)
-
     raise MIN_ERROR if @balance < MIN_FARE
-    @journey[:entry_station] = station
+    @journey = @journey_class.new
+    @journey.add_station(:entry_station => station)
   end
 
   def touch_out(station)
-     deduct(MIN_FARE)
-     @journey[:exit_station] = station
-     @journeys << @journey
-     @journey = {}
+    @journey.add_station(:exit_station => station)
+     push_journey(@journey)
+     @journey = nil
   end
 
   private
 
-  def deduct(fare)
-    @balance -= fare
+
+  def push_journey(journey)
+    @balance -= MIN_FARE
+    @journeys << @journey
   end
+
+
 
 end
