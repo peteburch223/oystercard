@@ -3,8 +3,7 @@ class Journey
   attr_reader :entry_station, :exit_station
 
   PENALTY_FARE = 6
-  MAX_VALUE = 90
-  MIN_VALUE = 1
+  MIN_FARE = 1
 
   def initialize
     @entry_station = nil
@@ -21,16 +20,12 @@ class Journey
 
 
   def fare
-    if penalty_fare == true
+    if @entry_station.nil? ^ @exit_station.nil?
       PENALTY_FARE
+    elsif @entry_station.nil? && @exit_station.nil?
+      0
     else
-      MIN_VALUE
-    end
-  end
-
-  def penalty_fare
-    if @entry_station != nil && @exit_station == nil || @entry_station == nil && @exit_station != nil
-      true
+      MIN_FARE
     end
   end
 
