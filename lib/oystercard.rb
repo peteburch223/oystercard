@@ -1,60 +1,57 @@
 require_relative 'station'
-require_relative 'journey'
+require_relative 'journey_log'
 
 class Oystercard
   MAX_VALUE = 90
   MIN_VALUE = 1
   MAX_ERROR = "Limit of #{MAX_VALUE} exceeded"
   MIN_ERROR = "You have an insufficicent balance"
-  PENALTY_FARE = Journey::PENALTY_FARE
-  MIN_FARE = Journey::MIN_FARE
+  # PENALTY_FARE = Journey::PENALTY_FARE
+  # MIN_FARE = Journey::MIN_FARE
 
   attr_reader :balance, :journey_history
 
 
-  def initialize(journey_class=Journey)
+  def initialize(journey_log=JourneyLog.new)
     @balance = 0
-    @journey_history = []
-    @journey_class = journey_class
+    @journey_log = journey_log
   end
 
   def top_up(cash)
-    within_limit(cash)
+    within_limit_check(cash)
     @balance += cash
   end
 
   def touch_in(station)
-     insufficient_funds
-     deduct(@journey.fare) if !@journey.nil?
-     # record_journey
-     @journey = @journey_class.new
-     @journey.entry_st(station)
+      deduct(@journey_log.current_journey.fare) if @journey_log.current_journey.in_progress?
+     insufficient_funds_check
+     @journey_log.start(station)
   end
 
   def touch_out(station)
-    @journey = @journey_class.new if @journey.nil?
-    @journey.exit_st(station)
-    deduct(@journey.fare)
-    record_journey
-    @journey = nil
+    @journey_log.finish(station)
+    deduct(@journey_log.current_journey.fare)
+    # deduct(@journey_log.current_journey.fare)
+
   end
 
 
     private
-    def within_limit(cash)
+    def within_limit_check(cash)
       raise MAX_ERROR if (balance + cash) > MAX_VALUE
     end
 
-    def insufficient_funds
+    def insufficient_funds_check
       raise MIN_ERROR if balance < MIN_VALUE
     end
 
     def deduct(fare)
       @balance -= fare
+      @journey_log.store_journey
     end
 
-    def record_journey
-      @journey_history << @journey
-    end
+    # def record_journey
+    #   @journey_history << @journey
+    # end
 
 end

@@ -1,6 +1,7 @@
 require_relative './lib/oystercard'
 require_relative './lib/station'
 require_relative './lib/journey'
+require_relative './lib/journey_log'
 
 card = Oystercard.new
 

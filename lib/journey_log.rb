@@ -1,3 +1,5 @@
+require_relative 'journey'
+
 class JourneyLog
 
 
@@ -7,16 +9,22 @@ class JourneyLog
   end
 
   def start(station)
+    current_journey
      @journey.entry_st(station)
   end
 
   def finish(station)
+    current_journey
     @journey.exit_st(station)
-    @journey_history << @journey
   end
 
   def current_journey
     @journey ||= @journey_class.new
+  end
+
+  def store_journey
+    @journey_history << @journey
+    @journey = nil
   end
 
   def journeys

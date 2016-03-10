@@ -23,11 +23,17 @@ describe JourneyLog do
 
   context 'normal journey' do
     it 'checks journeys are pushed into journey_history' do
-    journey = journey_log.current_journey
     journey_log.start(entry_station)
     journey_log.finish(exit_station)
-    expect(journey_log.journeys).to include(journey)
+    journey_log.store_journey
+    expect(journey_log.journeys).to include(journey_instance)
   end
+    # it 'checks that start station is correctly set' do
+    #     journey = journey_log.current_journey
+    #     journey_log.start(entry_station)
+    #     journey_log.store_journey
+    #     expect(journey_log.journeys.last)
+    # end
   end
 
   describe 'start' do

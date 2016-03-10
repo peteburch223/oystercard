@@ -1,22 +1,25 @@
 require 'oystercard'
 
 describe Oystercard do
-  subject(:card) { described_class.new(journey_class) }
+  MIN_FARE = 1
+  PENALTY_FARE = 6
+
+  subject(:card) { described_class.new(journey_log_instance) }
 
   let(:entry_station) { double :station}
   let(:exit_station) { double :station}
   let(:journey_class) { double :journey_class, new:journey_instance }
-  let(:journey_instance) { double :journey_instance, entry_st: nil, exit_st: nil, fare: Oystercard::MIN_VALUE }
-  max_value = Oystercard::MAX_VALUE
+  let(:journey_instance) { double :journey_instance, entry_st: nil, exit_st: nil, fare: Oystercard::MIN_VALUE, in_progress?: false }
+  let(:journey_log_instance) { double :journey_log, start: nil, finish: nil, current_journey: journey_instance, store_journey: nil }
+
 
   describe '#initialize' do
     it { expect(card.balance).to be_zero }
-    it { expect(card.journey_history).to be_empty }
   end
 
   describe '#top_up' do
     it { expect{ card.top_up 1 }.to change{ card.balance }.by 1 }
-    it { expect{ card.top_up (max_value + 1) }.to raise_error Oystercard::MAX_ERROR }
+    it { expect{ card.top_up (Oystercard::MAX_VALUE + 1) }.to raise_error Oystercard::MAX_ERROR }
   end
 
 
@@ -26,10 +29,11 @@ describe Oystercard do
 
 
       it 'deducts PENALTY_FARE if not touched out' do
-        card.top_up(5)
+        card.top_up(10)
         card.touch_in(entry_station)
-        allow(journey_instance).to receive(:fare) { Oystercard::PENALTY_FARE }
-        expect{ card.touch_in(entry_station) }.to change{ card.balance }.by(-Oystercard::PENALTY_FARE)
+        allow(journey_instance).to receive(:fare) { PENALTY_FARE }
+        allow(journey_instance).to receive(:in_progress?) { true }
+        expect{ card.touch_in(entry_station) }.to change{ card.balance }.by(-PENALTY_FARE)
       end
     end
 
@@ -38,17 +42,11 @@ describe Oystercard do
     it 'should reduce the balance by minimum fare' do
       card.top_up(5)
       card.touch_in(entry_station)
-      expect{ card.touch_out(exit_station) }.to change{ card.balance }.by(-Oystercard::MIN_FARE)
+      expect{ card.touch_out(exit_station) }.to change{ card.balance }.by(-MIN_FARE)
     end
     it 'deducts PENALTY_FARE if not touched in' do
-      allow(journey_instance).to receive(:fare) { Oystercard::PENALTY_FARE }
-      expect{ card.touch_out(entry_station) }.to change{ card.balance }.by(-Oystercard::PENALTY_FARE)
-    end
-    it 'save journey after touch_out' do
-      card.top_up(5)
-      card.touch_in(entry_station)
-      card.touch_out(exit_station)
-      expect(card.journey_history).to eq [journey_instance]
+      allow(journey_instance).to receive(:fare) { PENALTY_FARE }
+      expect{ card.touch_out(entry_station) }.to change{ card.balance }.by(-PENALTY_FARE)
     end
 
   end
