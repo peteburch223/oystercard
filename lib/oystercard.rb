@@ -26,6 +26,7 @@ class Oystercard
   def touch_in(station)
      insufficient_funds
      deduct(@journey.fare) if !@journey.nil?
+     # record_journey
      @journey = @journey_class.new
      @journey.entry_st(station)
   end
