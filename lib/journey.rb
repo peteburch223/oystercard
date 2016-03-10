@@ -18,9 +18,13 @@ class Journey
     @exit_station = station
   end
 
+  def in_progress?
+    @entry_station.nil? ^ @exit_station.nil?
+  end
+
 
   def fare
-    if @entry_station.nil? ^ @exit_station.nil?
+    if in_progress?
       PENALTY_FARE
     elsif @entry_station.nil? && @exit_station.nil?
       0

@@ -20,6 +20,26 @@ describe Journey do
     it { expect(journey.exit_st(exit_station)).to eq exit_station }
   end
 
+  describe '#in_progress?' do
+    it 'returns false if entry_station and exit_station are set' do
+      journey.entry_st(entry_station)
+      journey.exit_st(exit_station)
+      expect(journey).to_not be_in_progress
+    end
+    it 'returns true if entry_station is set and exit_station is nil' do
+      journey.entry_st(entry_station)
+      expect(journey).to be_in_progress
+    end
+    it 'returns true if entry_station is nil and exit_station is set' do
+      journey.exit_st(exit_station)
+      expect(journey).to be_in_progress
+    end
+    it 'return false if entry_station and exit_station are not set' do
+      expect(journey).to_not be_in_progress
+    end
+
+  end
+
   describe '#fare' do
     it 'returns MIN_VALUE if entry_station and exit_station are set' do
       journey.entry_st(entry_station)
